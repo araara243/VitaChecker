@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com">
+    <title>Vitamin Deficiency Checker</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 20px;
+            font-weight: 550;
+            background-color: #001c57;
+        }
+
+        body::before {
+         content: "";
+        background-image: url(retropattern.png);
+        opacity: 0.3;
+        position: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; 
+        } 
+
+        h1 , h4 {
+            text-align: center;
+            color: bisque;
+        }
+
+        
+
+        p {
+
+            color: rgb(236, 228, 164);
+            font-weight: 600;
+
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #0a6ebd;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 20px;
+            font-style: bold;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result, #allergyResult, #ageGroupMessage {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        #allergyResult {
+            color: red;
+            font-weight: bold;
+        }
+        #mainForm {
+            display: none;
+        }
+        .note {
+            font-size: 14px;
+            color: bisque;
+            font-style: italic;
+        }
+
+        #beforesplash {
+
+            display:none;
+        }
+
+        #ageGroupMessage{
+
+            color: bisque;
+        }
+
+        .icon{
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            border: 1px solid #ffffff;
+            border-radius: 20%;
+            background-color: #ffffff;
+        }
+        .lab{
+
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <div class = "intro">
+        <h1 class="logo-header">
+            <span class="logo">Group</span><span class="logo">5.</span>
+        </h1>
+    </div>
+
+    <div id = "header">
+    <header>
+            <h4>Group 5.</h4>
+    </header>
+    </div>
+
+    <script src="app.js"></script>
+
+
+    <div id="beforesplash">
+
+        <h1>Vitamin Deficiency Checker</h1>
+        <br>
+        <img src="labnobg.png" alt="lab" class="lab" width="300" height="300">
+        <br>
+        <br>
+        <p><img src="allergyicon2.png" alt="Allergy Icon" class="icon">&emsp;Do you have any allergies?</p>
+        <br>
+        <select id="allergies" onchange="checkAllergy()">
+            <option value="">Select an option</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+    
+        <div id="allergyResult"></div>
+
+    </div>
+
+
+    
+    <div id="mainForm">
+        <br>
+        <br>
+        <p><img src="agegroup.png" alt="Age Icon" class="icon">&emsp;Select your age range:</p>
+        <br>
+        <select id="ageRangeSelect" onchange="displayAgeGroup()">
+            <option value="">Select an age range</option>
+            <option value="<1">less than 1</option>
+            <option value="1-17">1-17</option>
+            <option value="18-59">18-59</option>
+        </select>
+        <div class="note">Different nutrition required according to the age group.</div>
+        <div id="ageGroupMessage"></div>
+
+        <!-- add to test3 -->
+        <!-- Existing gender selection section -->
+        <br>
+        <div id="genderQuestion" style="display: none;">
+            <br>
+            <br>
+            <p><img src="gender.png" alt="gender" class="icon">&emsp;What is your gender?</p>
+            <br>
+            <select id="genderSelect" onchange="displayPregnancyQuestion()">
+            <option value="">Select your gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        <div class="note">Nutrition intake for each gender is different.</div>
+        <br>
+    </div>
+
+
+        <!-- add to test3 -->
+        <!-- New section for pregnancy status selection -->
+        <br>
+        <br>
+        <div id="pregnancyQuestion" style="display: none;">
+            <p><img src="pregnant.png" alt="pregnant" class="icon">&emsp;Are you pregnant?</p>
+            <br>
+            <select id="pregnancySelect" onchange = 'displayBreastfeedingQuestion()'>
+            <option value="">Select an option</option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+        <div class="note">Pregnant woman's vitamin intake is different.</div>
+        <br><!-- add to test3 -->
+    </div>
+
+        <!-- add to test3 -->
+        <!-- New section for breastfeeding status selection -->
+        
+        <div id="breastfeedingQuestion" style="display: none;">
+            <br>
+            <br>
+            <p><img src="breastfeeding.png" alt="breastfeeding" class="icon">&emsp;Are you breastfeeding?</p>
+            <br>
+            <select id="breastfeedingSelect">
+            <option value="">Select an option</option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+        <div class="note">Breastfeeding woman's vitamin intake is different.</div>
+        <br>
+    </div>
+
+        <div id="symptomAdult" style="display: none;">
+        <br>
+        <br>
+        <p><img src="Magnifyingglass.png" alt="symptoms" class="icon">&emsp;Select your symptom:</p>
+        <br>
+        <select id="symptomSelectAdult" onchange = 'displayAgeGroup()'>
+            <option value="">Select a symptom</option>
+            <option value="Dry eyes">Dry eyes</option>
+            <option value="Sensitivity to light">Sensitivity to light</option>
+            <option value="Dry skin">Dry skin</option>
+            <option value="Swollen skin">Swollen skin</option>
+            <option value="Easily infected">Easily infected</option>
+            <option value="Decreasing in immunity">Decreasing in immunity</option>
+            <option value="Double vision">Double vision</option>
+            <option value="Dark urine">Dark urine</option>
+            <option value="Pale stool">Pale stool</option>
+            <option value="Osteoporosis">Osteoporosis</option>
+            <option value="Feeling object in eyes">Feeling object in eyes</option>
+            <option value="Blurred vision">Blurred vision</option>
+            <option value="Difficult putting on weight">Difficult putting on weight</option>
+            <option value="White part of eyes are red">White part of eyes are red</option>
+            <option value="Blister">Blister</option>
+            <option value="Dizziness">Dizziness</option>
+            <option value="Cracked corner mouth">Cracked corner mouth</option>
+            <option value="Sense needles in hand">Sense needles in hand</option>
+            <option value="Sense needles in leg">Sense needles in leg</option>
+            <option value="Struggling falling asleep at night">Struggling falling asleep at night</option>
+            <option value="Redness tongue">Redness tongue</option>
+            <option value="Itchiness">Itchiness</option>
+            <option value="Loss of interest">Loss of interest</option>
+            <option value="Tiredness">Tiredness</option>
+            <option value="Unable to control emotion">Unable to control emotion</option>
+            <option value="Impaired memory">Impaired memory</option>
+            <option value="Lightheadedness">Lightheadedness</option>
+            <option value="Suicidal thoughts">Suicidal thoughts</option>
+            <option value="Rapid hair graying">Rapid hair graying</option>
+            <option value="Waking up during the night">Waking up during the night</option>
+            <option value="Thrush">Thrush</option>
+            <option value="Bleeding under skin">Bleeding under skin</option>
+            <option value="Gum problem">Gum problem</option>
+            <option value="Short of breath">Short of breath</option>
+            <option value="Failed in wound healing">Failed in wound healing</option>
+            <option value="Frequent infections">Frequent infections</option>
+            <option value="Muscle spasms">Muscle spasms</option>
+            <option value="Difficult to walk">Difficult to walk</option>
+            <option value="Fast restless">Fast restless</option>
+            <option value="Brittle bones">Brittle bones</option>
+            <option value="Bone pain">Bone pain</option>
+            <option value="Spinal abnormalities">Spinal abnormalities</option>
+            <option value="Bowing leg bones">Bowing leg bones</option>
+            <option value="Widening of knees">Widening of knees</option>
+            <option value="Unusual shape skull">Unusual shape skull</option>
+            <option value="Skeletal tenderness">Skeletal tenderness</option>
+            <option value="Growth delay">Growth delay</option>
+            <option value="Slow reflex">Slow reflex</option>
+            <option value="Decrease vision">Decrease vision</option>
+            <option value="Steatorrhea">Steatorrhea</option>
+            <option value="Abdominal pain">Abdominal pain</option>
+            <option value="Abdominal distension">Abdominal distension</option>
+            <option value="Loss coordination">Loss coordination</option>
+            <option value="Loss position of sense">Loss position of sense</option>
+            <option value="Irregular heartbeat">Irregular heartbeat</option>
+            <option value="Muscle weakness">Muscle weakness</option>
+            <option value="Diarrhea">Diarrhea</option>
+            <option value="Bloating">Bloating</option>
+            <option value="Vomiting">Vomiting</option>
+            <option value="Bleeding inside body">Bleeding inside body</option>
+            <option value="Period heavier">Period heavier</option>
+            <option value="Chest pain">Chest pain</option>
+            <option value="Vomiting blood">Vomiting blood</option>
+            <option value="Blood in urine">Blood in urine</option>
+            <option value="Rapid heartbeat">Rapid heartbeat</option>
+            <option value="Difficult to stop bleeding">Difficult to stop bleeding</option>
+            <option value="Skin bruise">Skin bruise</option>
+            <option value="Nosebleed">Nosebleed</option>
+        </select>
+        </div>
+
+        <div id = "symptomInfant" style = "display: none;">
+            <br>
+            <br>
+            <p><img src="Magnifyingglass.png" alt="symptoms" class="icon">&emsp;Select your symptom:</p>
+        <br>
+        <select id="symptomSelectInfant" onchange = 'displayAgeGroup()'>
+            <option value="">Select a symptom</option>
+            <option value="Dry eyes">Dry eyes</option>
+            <option value="Sensitivity to light">Sensitivity to light</option>
+            <option value="Dry skin">Dry skin</option>
+            <option value="Easily infected">Easily infected</option>
+            <option value="Decreasing in immunity">Decreasing in immunity</option>
+            
+            <option value="Blister">Blister</option>
+            <option value="Dizziness">Dizziness</option>
+            <option value="Redness tongue">Redness tongue</option>
+            <option value="Itchiness">Itchiness</option>
+            <option value="Loss of interest">Loss of interest</option>
+
+            <option value="Tiredness">Tiredness</option>
+            <option value="Unable to control emotion">Unable to control emotion</option>
+            <option value="Waking up during the night">Waking up during the night</option>
+
+            <option value="Thrush">Thrush</option>
+            <option value="Short of breath">Short of breath</option>
+            <option value="Failed in wound healing">Failed in wound healing</option>
+            <option value="Frequent infections">Frequent infections</option>
+
+            <option value="Difficult to walk">Difficult to walk</option>
+            <option value="Brittle bones">Brittle bones</option>
+            <option value="Spinal abnormalities">Spinal abnormalities</option>
+            <option value="Growth delay">Growth delay</option>
+
+            <option value="Slow reflex">Slow reflex</option>
+            <option value="Irregular heartbeat">Irregular heartbeat</option>
+            <option value="Muscle weakness">Muscle weakness</option>
+            <option value="Diarrhea">Diarrhea</option>
+            <option value="Bloating">Bloating</option>
+
+            <option value="Vomiting">Vomiting</option>
+            <option value="Difficult to stop bleeding">Difficult to stop bleeding</option>
+            <option value="Skin bruise">Skin bruise</option>
+            <option value="Nosebleed">Nosebleed</option>
+        </select>
+        </div>
+
+        
+    <div id = "symptomChild" style = "display: none;">
+        <br>
+        <br>
+        <p><img src="Magnifyingglass.png" alt="symptoms" class="icon">&emsp;Select your symptom:</p>
+        <br>
+        <select id="symptomSelectChild" onchange = 'displayAgeGroup()'>
+            <option value="">Select a symptom</option>
+            <option value="Dry eyes">Dry eyes</option>
+            <option value="Sensitivity to light">Sensitivity to light</option>
+            <option value="Dry skin">Dry skin</option>
+            <option value="Easily infected">Easily infected</option>
+            <option value="Decreasing in immunity">Decreasing in immunity</option>
+            <option value="Double vision">Double vision</option>
+            <option value="Difficult putting on weight">Difficult putting on weight</option>
+            <option value="White part of eyes are red">White part of eyes are red</option>
+
+            <option value="Blister">Blister</option>
+            <option value="Dizziness">Dizziness</option>
+            <option value="Struggling falling asleep at night">Struggling falling asleep at night</option>
+            <option value="Redness tongue">Redness tongue</option>
+            <option value="Itchiness">Itchiness</option>
+            <option value="Loss of interest">Loss of interest</option>
+
+            <option value="Tiredness">Tiredness</option>
+            <option value="Unable to control emotion">Unable to control emotion</option>
+            <option value="Impaired memory">Impaired memory</option>
+            <option value="Lightheadedness">Lightheadedness</option>
+            <option value="Waking up during the night">Waking up during the night</option>
+
+            <option value="Thrush">Thrush</option>
+            <option value="Bleeding under skin">Bleeding under skin</option>
+            <option value="Gum problem">Gum problem</option>
+            <option value="Short of breath">Short of breath</option>
+            <option value="Failed in wound healing">Failed in wound healing</option>
+            <option value="Frequent infections">Frequent infections</option>
+
+            <option value="Muscle spasms">Muscle spasms</option>
+            <option value="Fast restless">Fast restless</option>
+            <option value="Brittle bones">Brittle bones</option>
+            <option value="Spinal abnormalities">Spinal abnormalities</option>
+            <option value="Bowing leg bones">Bowing leg bones</option>
+            <option value="Widening of knees">Widening of knees</option>
+            <option value="Skeletal tenderness">Skeletal tenderness</option>
+            <option value="Growth delay">Growth delay</option>
+
+
+            <option value="Slow reflex">Slow reflex</option>
+            <option value="Decrease vision">Decrease vision</option>
+            <option value="Loss position of sense">Loss position of sense</option>
+            <option value="Irregular heartbeat">Irregular heartbeat</option>
+            <option value="Muscle weakness">Muscle weakness</option>
+            <option value="Diarrhea">Diarrhea</option>
+            <option value="Bloating">Bloating</option>
+
+
+            <option value="Vomiting">Vomiting</option>
+            <option value="Bleeding inside body">Bleeding inside body</option>
+            <option value="Vomiting blood">Vomiting blood</option>
+            <option value="Blood in urine">Blood in urine</option>
+            <option value="Rapid heartbeat">Rapid heartbeat</option>
+            <option value="Difficult to stop bleeding">Difficult to stop bleeding</option>
+            <option value="Skin bruise">Skin bruise</option>
+            <option value="Nosebleed">Nosebleed</option>
+        </select>
+
+    </div>
+
+        <button onclick="checkVitamin()"><b>Check Deficiency & Dosage</b></button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        function checkAllergy() {
+            var allergy = document.getElementById("allergies").value;
+            var allergyResult = document.getElementById("allergyResult");
+            var mainForm = document.getElementById("mainForm");
+
+            if (allergy === "Yes") {
+                allergyResult.innerHTML = "You have an allergy.<br>We can't help you. Please meet a doctor to run a blood test for your prescription.";
+                mainForm.style.display = "none";
+            } else if (allergy === "No") {
+                allergyResult.innerHTML = "";
+                mainForm.style.display = "block";
+            } else {
+                allergyResult.innerHTML = "";
+                mainForm.style.display = "none";
+            }
+        }
+
+        function displayAgeGroup() {
+            var selectedAge = document.getElementById("ageRangeSelect").value;
+            var ageGroupMessage = document.getElementById("ageGroupMessage");
+            var genderQuestion = document.getElementById("genderQuestion");
+            var symptom = document.getElementById("symptomAdult");
+            var symptomInfant = document.getElementById("symptomInfant");
+            var symptomChild = document.getElementById("symptomChild");
+
+
+
+            
+            switch (selectedAge) {
+                case "<1":
+                    ageGroupMessage.innerHTML = "Group Age: Infant";
+                    genderQuestion.style.display = "none";
+                    symptomInfant.style.display = "block";
+                    symptom.style.display = "none";
+                    symptomChild.style.display = "none";
+
+                    break;
+                case "1-17":
+                    ageGroupMessage.innerHTML = "Group Age: Child/Adolescent";
+                    genderQuestion.style.display = "none";
+                    symptomChild.style.display = "block";
+                    symptom.style.display = "none";
+                    symptomInfant.style.display = "none";
+
+                    break;
+                case "18-59":
+                    ageGroupMessage.innerHTML = "Group Age: Adult";
+                    genderQuestion.style.display = "block";
+                    symptom.style.display = "block"
+                    symptomInfant.style.display = "none";
+                    symptomChild.style.display = "none";
+
+                    break;
+                default:
+                    ageGroupMessage.innerHTML = "";
+                    genderQuestion.style.display = "none";//add to test3
+                    symptomInfant.style.display = "none";
+                    symptomChild.style.display = "none";
+                    symptomChild.style.display = "none";
+                    break;
+            }
+        }
+
+        //add to test3
+        function displayPregnancyQuestion() {
+            var selectedGender = document.getElementById("genderSelect").value;
+            var pregnancyQuestion = document.getElementById("pregnancyQuestion");
+            var breastfeedingQuestion = document.getElementById("breastfeedingQuestion");
+            var symptom = document.getElementById("symptomAdult");
+
+
+            if (selectedGender === "Female") {
+                pregnancyQuestion.style.display = "block";
+                //breastfeedingQuestion.style.display = "none"; // Ensure breastfeeding question is shown for females
+                symptom.style.display = "none";
+
+            } else {
+                symptom.style.display = "block";
+                pregnancyQuestion.style.display = "none";
+                breastfeedingQuestion.style.display = "none";// add test3
+
+            }
+        }
+
+        //add to test3
+        function displayBreastfeedingQuestion() {
+            var selectedPregnancy = document.getElementById("pregnancySelect").value;
+            var breastfeedingQuestion = document.getElementById("breastfeedingQuestion");
+            var symptom = document.getElementById("symptomAdult");
+
+            if (selectedPregnancy === "No") {
+                breastfeedingQuestion.style.display = "block";
+                symptom.style.display = "block";
+
+            } else if (selectedPregnancy === "Yes"){
+                breastfeedingQuestion.style.display = "none";
+                symptom.style.display = "block";
+            } else {
+                breastfeedingQuestion.style.display = "none";
+            }
+        }
+        
+        //KITA SUMBAT SEMUA RULES DALAMNI LA MAT
+        function checkVitamin() {
+            var selectedSymptomInfant = document.getElementById("symptomSelectInfant").value;
+            var selectedSymptomChild = document.getElementById("symptomSelectChild").value;
+            var selectedSymptomAdult = document.getElementById("symptomSelectAdult").value;
+
+            var selectedAge = document.getElementById("ageRangeSelect").value;
+            var deficiency;
+            var doseRecommendation;
+            var selectedGender = document.getElementById("genderSelect").value; // Add this line
+            var selectedPregnancy = document.getElementById("pregnancySelect").value; //Add
+            var selectedBreastfeeding = document.getElementById("breastfeedingSelect").value; //Add
+
+            if (!selectedAge) {
+                alert("Please select both an age range and a symptom.");
+                return;
+            }
+
+            if (selectedAge === "18-59" && !selectedGender) {
+                alert("Please select your gender.");
+                return;
+            }
+            //add to test3
+            if (selectedGender === "Female" && !selectedPregnancy) {
+                alert("Please select your pregnancy status.");
+                return;
+            }
+
+            if (selectedPregnancy === "No" && !selectedBreastfeeding) {
+                alert("Please select your breastfeeding status.");
+                return;
+            }
+
+            // FOR INFANT
+            if(selectedAge === "<1"){
+                switch(selectedSymptomInfant) {
+                case "Dry eyes":
+                case "Dry skin":
+                case "Easily infected":
+                case "Sensitivity to light":
+                case "Decreasing in immunity":
+                    deficiency = "Vitamin A deficiency.";
+                    doseRecommendation = "Take 5000 units of Vitamin A DAILY.";
+                    break;
+                case "Blister":
+                case "Itchiness":
+                case "Redness tongue":
+                case "Loss of interest":
+                    deficiency = "Vitamin B6 deficiency";
+                    doseRecommendation = "Take 5mg of Vitamin B6 DAILY.";
+                    break;
+                case "Tiredness":
+                case "Unable to control emotion":
+                case "Waking up during the night":
+                    deficiency = "Vitamin B12 deficiency";
+                    doseRecommendation = "There is no dosage, please consult a healthcare professional.";
+                    break;
+                case "Failed in wound healing":
+                case "Thrush":
+                case "Short of breath":
+                case "Frequent infections":
+                    deficiency = "Vitamin C deficiency";
+                    doseRecommendation = "Take 125 - 250 mg of Vitamin C DAILY.";
+
+                    break;
+                case "Difficult to walk":
+                case "Brittle bones":
+                case "Growth delay":
+                case "Spinal abnormalities":
+                    deficiency = "Vitamin D deficiency";
+                    doseRecommendation = "Take 8.5 - 10 mg of Vitamin D DAILY.";
+                    break;
+                case "Slow reflex":
+                case "Diarrhea":
+                case "Bloating":
+                case "Muscle Weakness":
+                case "Irregular heartbeat":
+                    deficiency = "Vitamin E deficiency";
+                    doseRecommendation = "Take 50 mg once of Vitamin E DAILY. ";
+                    break;
+                case "Vomiting":
+                case "Nosebleed":
+                case "Skin bruise":
+                    deficiency = "Vitamin K deficiency";
+                    doseRecommendation = "Take 1 mg of Vitamin K DAILY.";
+                    break;
+                default:
+                    deficiency = "Unknown";
+                    doseRecommendation = "Consult a healthcare professional for diagnosis and treatment.";
+                    break;
+            }
+            document.getElementById("result").innerHTML = "<br><strong>Potential Vitamin Deficiency:</strong> " + deficiency + "<br><strong>Recommended Vitamin Dosage:</strong> " + doseRecommendation;
+            }
+
+            //UNTUK CHILD
+            else if ( selectedAge === "1-17"){
+
+               
+                switch(selectedSymptomChild) {
+                case "Dry eyes":
+                case "Dry skin":
+                case "Easily infected":
+                case "Sensitivity to light":
+                case "Decreasing in immunity":
+                case "White part of eyes are red":
+                case "Difficult putting on weight":
+                    deficiency = "Vitamin A deficiency";
+                    doseRecommendation = "10000 unit of Vitamin A DAILY.";
+                    break;
+                case "Blister":
+                case "Dizziness":
+                case "Itchiness":
+                case "Redness tounge":
+                case "Loss of interest":
+                case "Struggling falling asleep at night":
+                    deficiency = "Vitamin B6 deficiency";
+                    doseRecommendation = "Take 5-10 mg of Vitmain B6 DAILY.";
+                    break;
+                case "Tiredness":
+                case "Impaired memory":
+                case "Lightheadedness":
+                case "Unable to control emotion":
+                case "Waking up during the night":
+                    deficiency = "Vitamin B12 deficiency";
+                    doseRecommendation = "Take 50 mg of Vitamin B12 DAILY.";
+                    break;
+                case "Thrush":
+                case "Gum problem":
+                case "Short of breath":
+                case "Bleeding under skin":
+                case "Frequent infections":
+                case "Failed in wound healing":
+                    deficiency = "Vitamin C deficiency";
+                    doseRecommendation = "Take 250 - 500 mg of Vitamin C DAILY.";
+                    break;
+                case "Symptoms muscle spasms":
+                case "Fast restless":
+                case "Brittle bones":
+                case "Growth delay":
+                case "Difficult to walk":
+                case "Bowing leg bones":
+                case "Widening of knees":
+                case "Skeletal tenderness":
+                case "Spinal abnormalities":
+                    deficiency = "Vitamin D deficiency";
+                    doseRecommendation = "Take 10 mg of Vitamin D DAILY.";
+                    break;
+                case "Slow reflex":
+                case "Diarrhea":
+                case "Bloating":
+                case "Muscle Weakness":
+                case "Loss position of sense":
+                case "Irregular heartbeat":
+                    deficiency = "Vitamin E deficiency";
+                    doseRecommendation = "Take 100 - 200 mg of Vitamin E DAILY.";
+                    break;
+                case "Vomiting":
+                case "Nosebleed":
+                case "Skin bruise":
+                case "Blood in urine":
+                case "Vomiting blood":
+                case "Rapid heartbeat":
+                case "Bleeding inside body":
+                case "Difficult to stop bleeding":
+                    deficiency = "Vitamin K deficiency";
+                    doseRecommendation = "Take 15 - 30 mg of Vitamin K DAILY.";
+                    break;
+                default:
+                    deficiency = "Unknown";
+                    doseRecommendation = "Consult a healthcare professional for diagnosis and treatment.";
+                    break;
+            }
+            document.getElementById("result").innerHTML = "<br><strong>Potential Vitamin Deficiency:</strong> " + deficiency + "<br><strong>Recommended Vitamin Dosage:</strong> " + doseRecommendation;
+
+            } 
+            //UNTUK ADULT MALE
+            else if (selectedAge === "18-59" && selectedGender === "Male"){ 
+
+                switch(selectedSymptomAdult) {
+                case "Dry eyes":
+                case "Dry skin":
+                case "Pale stool":
+                case "Dark urine":
+                case "Osteoporosis":
+                case "Swollen skin":
+                case "Double Vision":
+                case "Blurred Vision":
+                case "Easily infected":
+                case "Sensitivity to light":
+                case "Feeling object in eye":
+                case "Decreasing in immunity":
+                case "White part of eyes are red":
+                case "Difficult putting on weight":
+                    deficiency = "Vitamin A deficiency";
+                    doseRecommendation = "Take 100000 unit for 3 DAYS followed by 50000 unit for 2 WEEKS of vitamin A DAILY.";
+                    break;
+                case "Blister":
+                case "Itchiness":
+                case "Dizziness":
+                case "Redness tongue":
+                case "Sense needles in leg":
+                case "Sense needles in hand":
+                case "Cracked corner mouth":
+                case "Struggling falling asleep at night":
+                case "Loss of interest":
+                    deficiency = "Vitamin B6 deficiency";
+                    doseRecommendation = "Take 20 - 500 mg of Vitamin B6 DAILY.";
+                    break;
+                case "Tiredness":
+                case "Unable to control emotion":
+                case "Waking up during the night":
+                case "Impaired memory":
+                case "Lightheadedness":
+                case "Suicidal thoughts":
+                case "Rapid hair graying":
+                    deficiency = "Vitamin B12 deficiency";
+                    doseRecommendation = "Take 50 - 100 mg of Vitamin B12 DAILY."
+                    break;
+                case "Failed in wound healing":
+                case "Thrush":
+                case "Short of breath":
+                case "Frequent infections":
+                case "Bleeding under skin":
+                case "Gum problem":
+                    deficiency = "Vitamin C deficiency";
+                    doseRecommendation = "Take 25-75 mg of Vitamin C DAILY.";
+                    break;
+                case "Difficult to walk":
+                case "Brittle bones":
+                case "Growth delay":
+                case "Spinal abnormalities":
+                case "Muscle spasms":
+                case "Fast restless":
+                case "Bone pain":
+                case "Bowing leg bones":
+                case "Widening of knees":
+                case "Unusual skull shape":
+                case "Skeletal tenderness":
+                    deficiency = "Vitamin D deficiency";
+                    doseRecommendation = "Take 10 mg of Vitamin D DAILY."
+                    break;
+                case "Slow reflex":
+                case "Decrease vision":
+                case "Steatorrhea":
+                case "Abdominal pain":
+                case "Abdominal distension":
+                case "Loss coordination":
+                case "Loss position of sense":
+                case "Irregular heartbeat":
+                case "Muscle weakness":
+                case "Diarrhea":
+                case "Bloating":
+                    deficiency = "Vitamin E deficiency";
+                    doseRecommendation = "Take 100 - 200 mg once of Vitamin E DAILY.";
+                    break;
+                case "Vomiting":
+                case "Bleeding inside body":
+                case "Chest pain":
+                case "Vomiting blood":
+                case "Blood in urine":
+                case "Rapid heartbeat":
+                case "Difficult to stop bleeding":
+                case "Skin bruise":
+                case "Nosebleed":
+                    deficiency = "Vitamin K deficiency";
+                    doseRecommendation = "Take 5 mg per dose by INTRAVENOUS INJECTION of Vitamin K DAILY.";
+                    break;
+                default:
+                    deficiency = "Unknown";
+                    doseRecommendation = "Consult a healthcare professional for diagnosis and treatment.";
+                    break;
+            }
+            document.getElementById("result").innerHTML = "<br><strong>Potential Vitamin Deficiency:</strong> " + deficiency + "<br><strong>Recommended Vitamin Dosage:</strong> " + doseRecommendation;            
+        }
+        
+        //UNTUK ADULT FEMALE YANG TAK PREGNANT
+        else if (selectedAge === "18-59" && selectedGender === "Female" && selectedPregnancy === "No" && selectedBreastfeeding === "No"){
+
+            switch(selectedSymptomAdult) {
+                case "Dry eyes":
+                case "Dry skin":
+                case "Pale stool":
+                case "Dark urine":
+                case "Osteoporosis":
+                case "Swollen skin":
+                case "Double Vision":
+                case "Blurred Vision":
+                case "Easily infected":
+                case "Sensitivity to light":
+                case "Feeling object in eye":
+                case "Decreasing in immunity":
+                case "White part of eyes are red":
+                case "Difficult putting on weight":
+                    deficiency = "Vitamin A deficiency";
+                    doseRecommendation = "Take 100000 unit for 3 DAYS followed by 50000 unit for 2 WEEKS of vitamin A DAILY.";
+                    break;
+                case "Blister":
+                case "Itchiness":
+                case "Dizziness":
+                case "Redness tongue":
+                case "Sense needles in leg":
+                case "Sense needles in hand":
+                case "Cracked corner mouth":
+                case "Struggling falling asleep at night":
+                case "Loss of interest":
+                    deficiency = "Vitamin B6 deficiency";
+                    doseRecommendation = "Take 20 - 500 mg of Vitamin B6 DAILY.";
+                    break;
+                case "Tiredness":
+                case "Unable to control emotion":
+                case "Waking up during the night":
+                case "Impaired memory":
+                case "Lightheadedness":
+                case "Suicidal thoughts":
+                case "Rapid hair graying":
+                    deficiency = "Vitamin B12 deficiency";
+                    doseRecommendation = "Take 50 - 100 mg of Vitamin B12 DAILY.";
+                    break;
+                case "Failed in wound healing":
+                case "Thrush":
+                case "Short of breath":
+                case "Frequent infections":
+                case "Bleeding under skin":
+                case "Gum problem":
+                    deficiency = "Vitamin C deficiency";
+                    doseRecommendation = "Take 25-75 mg of Vitamin C DAILY.";
+                    break;
+                case "Difficult to walk":
+                case "Brittle bones":
+                case "Growth delay":
+                case "Spinal abnormalities":
+                case "Muscle spasms":
+                case "Fast restless":
+                case "Bone pain":
+                case "Bowing leg bones":
+                case "Widening of knees":
+                case "Unusual skull shape":
+                case "Skeletal tenderness":
+                    deficiency = "Vitamin D deficiency";
+                    doseRecommendation = "Take 10 mg of Vitamin D DAILY.";
+                    break;
+                case "Slow reflex":
+                case "Decrease vision":
+                case "Steatorrhea":
+                case "Abdominal pain":
+                case "Abdominal distension":
+                case "Loss coordination":
+                case "Loss position of sense":
+                case "Irregular heartbeat":
+                case "Muscle weakness":
+                case "Diarrhea":
+                case "Bloating":
+                    deficiency = "Vitamin E deficiency";
+                    doseRecommendation = "Take 100 - 200 mg once of Vitamin E DAILY.";
+                    break;
+                case "Vomiting":
+                case "Bleeding inside body":
+                case "Chest pain":
+                case "Vomiting blood":
+                case "Blood in urine":
+                case "Rapid heartbeat":
+                case "Difficult to stop bleeding":
+                case "Skin bruise":
+                case "Nosebleed":
+                case "Period heavier":
+                    deficiency = "Vitamin K deficiency";
+                    doseRecommendation = "Take 5 mg per dose by INTRAVENOUS INJECTION of Vitamin K DAILY.";
+                    break;
+                default:
+                    deficiency = "Unknown";
+                    doseRecommendation = "Consult a healthcare professional for diagnosis and treatment.";
+                    break;
+            }
+            document.getElementById("result").innerHTML = "<br><strong>Potential Vitamin Deficiency:</strong> " + deficiency + "<br><strong>Recommended Vitamin Dosage:</strong> " + doseRecommendation;            
+    }
+        //UNTUK ADULT FEMALE YANG NOT PREGNANT AND BREASTFEED
+        else if (selectedAge === "18-59" && selectedGender === "Female" && selectedPregnancy === "No" && selectedBreastfeeding === "Yes"){
+
+            switch(selectedSymptomAdult) {
+                case "Dry eyes":
+                case "Dry skin":
+                case "Pale stool":
+                case "Dark urine":
+                case "Osteoporosis":
+                case "Swollen skin":
+                case "Double Vision":
+                case "Blurred Vision":
+                case "Easily infected":
+                case "Sensitivity to light":
+                case "Feeling object in eye":
+                case "Decreasing in immunity":
+                case "White part of eyes are red":
+                case "Difficult putting on weight":
+                    deficiency = "Vitamin A deficiency";
+                    doseRecommendation = "Tak 1200 - 1300mcg of Vitamin A DAILY.";
+                    break;
+                case "Blister":
+                case "Itchiness":
+                case "Dizziness":
+                case "Redness tongue":
+                case "Sense needles in leg":
+                case "Sense needles in hand":
+                case "Cracked corner mouth":
+                case "Struggling falling asleep at night":
+                case "Loss of interest":
+                    deficiency = "Vitamin B6 deficiency";
+                    doseRecommendation = "Take 2 mg of Vitamin B6 DAILY."
+                    break;
+                case "Tiredness":
+                case "Unable to control emotion":
+                case "Waking up during the night":
+                case "Impaired memory":
+                case "Lightheadedness":
+                case "Suicidal thoughts":
+                case "Rapid hair graying":
+                    deficiency = "Vitamin B12 deficiency";
+                    doseRecommendation = "Take 2.8 mcg of Vitamin B12 DAILY.";
+                    break;
+                case "Failed in wound healing":
+                case "Thrush":
+                case "Short of breath":
+                case "Frequent infections":
+                case "Bleeding under skin":
+                case "Gum problem":
+                    deficiency = "Vitamin C deficiency";
+                    doseRecommendation = "Take 115 - 120 mcg of Vitamin C DAILY.";
+
+                case "Difficult to walk":
+                case "Brittle bones":
+                case "Growth delay":
+                case "Spinal abnormalities":
+                case "Muscle spasms":
+                case "Fast restless":
+                case "Bone pain":
+                case "Bowing leg bones":
+                case "Widening of knees":
+                case "Unusual skull shape":
+                case "Skeletal tenderness":
+                    deficiency = "Vitamin D deficiency";
+                    doseRecommendation = "Take 15 mcg of Vitamin D DAILY.";
+                    break;
+                case "Slow reflex":
+                case "Decrease vision":
+                case "Steatorrhea":
+                case "Abdominal pain":
+                case "Abdominal distension":
+                case "Loss coordination":
+                case "Loss position of sense":
+                case "Irregular heartbeat":
+                case "Muscle weakness":
+                case "Diarrhea":
+                case "Bloating":
+                    deficiency = "Vitamin E deficiency";
+                    doseRecommendation = "Take 19 mg once of Vitamin E DAILY.";
+                    break;
+                case "Vomiting":
+                case "Bleeding inside body":
+                case "Chest pain":
+                case "Vomiting blood":
+                case "Blood in urine":
+                case "Rapid heartbeat":
+                case "Difficult to stop bleeding":
+                case "Skin bruise":
+                case "Nosebleed":
+                case "Period heavier":
+                    deficiency = "Vitamin K deficiency";
+                    doseRecommendation = "Take 75 - 90 mcg of Vitamin K DAILY."
+                    break;
+                default:
+                    deficiency = "Unknown";
+                    doseRecommendation = "Consult a healthcare professional for diagnosis and treatment.";
+                    break;
+            }
+            document.getElementById("result").innerHTML = "<br><strong>Potential Vitamin Deficiency:</strong> " + deficiency + "<br><strong>Recommended Vitamin Dosage:</strong> " + doseRecommendation;            
+
+
+
+        }
+        //pregnant
+        else if( selectedAge === "18-59" && selectedGender === "Female" && selectedPregnancy === "Yes"){
+            switch(selectedSymptomAdult) {
+                case "Dry eyes":
+                case "Dry skin":
+                case "Pale stool":
+                case "Dark urine":
+                case "Osteoporosis":
+                case "Swollen skin":
+                case "Double Vision":
+                case "Blurred Vision":
+                case "Easily infected":
+                case "Sensitivity to light":
+                case "Feeling object in eye":
+                case "Decreasing in immunity":
+                case "White part of eyes are red":
+                case "Difficult putting on weight":
+                    deficiency = "Vitamin A deficiency";
+                    doseRecommendation = "Take 750 - 770 mcg of Vitamin A DAILY.";
+                    break;
+                case "Blister":
+                case "Itchiness":
+                case "Dizziness":
+                case "Redness tongue":
+                case "Sense needles in leg":
+                case "Sense needles in hand":
+                case "Cracked corner mouth":
+                case "Struggling falling asleep at night":
+                case "Loss of interest":
+                    deficiency = "Vitamin B6 deficiency";
+                    doseRecommendation = "Take 1.9 mg of Vitamin B6 DAILY."
+                    break;
+                case "Tiredness":
+                case "Unable to control emotion":
+                case "Waking up during the night":
+                case "Impaired memory":
+                case "Lightheadedness":
+                case "Suicidal thoughts":
+                case "Rapid hair graying":
+                    deficiency = "Vitamin B12 deficiency";
+                    doseRecommendation = "Take 2.6 mcg of Vitamin B12 DAILY."
+                    break;
+                case "Failed in wound healing":
+                case "Thrush":
+                case "Short of breath":
+                case "Frequent infections":
+                case "Bleeding under skin":
+                case "Gum problem":
+                    deficiency = "Vitamin C deficiency";
+                    doseRecommendation = "Take 85 mg of Vitamin C DAILY.";
+                    break;
+                case "Difficult to walk":
+                case "Brittle bones":
+                case "Growth delay":
+                case "Spinal abnormalities":
+                case "Muscle spasms":
+                case "Fast restless":
+                case "Bone pain":
+                case "Bowing leg bones":
+                case "Widening of knees":
+                case "Unusual skull shape":
+                case "Skeletal tenderness":
+                    deficiency = "Vitamin D deficiency";
+                    doseRecommendation = "Take 15 mcg of Vitamin D DAILY.";
+                    break;
+                case "Slow reflex":
+                case "Decrease vision":
+                case "Steatorrhea":
+                case "Abdominal pain":
+                case "Abdominal distension":
+                case "Loss coordination":
+                case "Loss position of sense":
+                case "Irregular heartbeat":
+                case "Muscle weakness":
+                case "Diarrhea":
+                case "Bloating":
+                    deficiency = "Vitamin E deficiency";
+                    doseRecommendation = "Take 15 mg once of Vitamin E DAILY.";
+                    break;
+                case "Vomiting":
+                case "Bleeding inside body":
+                case "Chest pain":
+                case "Vomiting blood":
+                case "Blood in urine":
+                case "Rapid heartbeat":
+                case "Difficult to stop bleeding":
+                case "Skin bruise":
+                case "Nosebleed":
+                case "Period heavier":
+                    deficiency = "Vitamin K deficiency";
+                    doseRecommendation = "Tak 75 - 90 mcg of Vitamin K DAILY.";
+                    break;
+                default:
+                    deficiency = "Unknown";
+                    doseRecommendation = "Consult a healthcare professional for diagnosis and treatment.";
+                    break;
+            }
+            document.getElementById("result").innerHTML = "<br><strong>Potential Vitamin Deficiency:</strong> " + deficiency + "<br><strong>Recommended Vitamin Dosage:</strong> " + doseRecommendation;            
+            
+            
+        }
+
+    }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            var allergy = document.getElementById("allergies").value;
+            var mainForm = document.getElementById("mainForm");
+
+            if (allergy !== "Yes" && allergy !== "No") {
+                mainForm.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
