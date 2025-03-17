@@ -1,1 +1,1 @@
-# VitaChecker
+# VitaChecker Prototype
